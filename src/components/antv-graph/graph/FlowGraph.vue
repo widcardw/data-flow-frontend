@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { NButton } from 'naive-ui'
 import { Icon } from '@iconify/vue'
 import { useGraphUi } from '../stores/graph-store-ui'
+import { antvGraph2Dag } from '../toDag'
 import { VertexTypes } from '~/composables/data-structure/dag'
 
 const container = ref<HTMLDivElement>()
@@ -18,7 +19,17 @@ function addImportNode() {
 }
 
 function log() {
+  // eslint-disable-next-line no-console
   console.log(graphToJSON())
+}
+
+function toDag() {
+  const jsonGraph = graphToJSON()
+  if (!jsonGraph)
+    return
+  const dag = antvGraph2Dag(jsonGraph.cells)
+  // eslint-disable-next-line no-console
+  console.log(dag.toDict())
 }
 </script>
 
@@ -32,6 +43,9 @@ function log() {
     </NButton>
     <NButton @click="log">
       打印
+    </NButton>
+    <NButton @click="toDag">
+      转换为 DAG
     </NButton>
   </div>
   <div ref="container" style="{ min-width: 400px; min-height: 600px; }" />

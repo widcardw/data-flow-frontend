@@ -72,9 +72,9 @@ function openNodeEditDialog() {
   showModal.value = true
 }
 
-// 更新有点不优雅，后期还得优化一下
 function onSaveData(e: any) {
-  node.setData(e)
+  // 将节点的数据写入到 node 当中
+  node.setData({ body: e })
   data.body = e
 }
 </script>
@@ -137,7 +137,8 @@ function onSaveData(e: any) {
     <template v-else-if="key === VertexTypes.Join">
       <JoinDlg
         :id="node.id"
-        :label="label" :data="data.body"
+        :label="label"
+        :data="data.body"
         @close="showModal = false"
         @save="onSaveData"
       />
